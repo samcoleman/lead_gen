@@ -1,0 +1,4 @@
+2021-05-10 00:48:49,236 - api.googleAPIRequest - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/textsearch/json?query=Takeaway in Padiham&region=uk&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
+2021-05-10 00:48:49,238 - api.googleAPIRequest - DEBUG - Attempt:1
+2021-05-10 00:49:39,801 - api.googleAPIRequest - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/textsearch/json?query=Takeaway in Padiham&region=uk&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
+2021-05-10 00:49:39,803 - api.googleAPIRequest - DEBUG - Attempt:1
