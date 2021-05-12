@@ -34,7 +34,6 @@ def list_search_strings(keyword: str, file_path:str):
 def places_search_to_business_directory():
   places_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\places_search_log.json"))
   places_search_log.load_df(".json")
-
   log_df = places_search_log.get_df()
 
   search_df = []
@@ -62,8 +61,9 @@ def places_search_to_business_directory():
   total_df.drop(columns=['geometry', 'icon', 'opening_hours', 'photos', 'reference', 'types',
                          'permanently_closed', 'plus_code'], inplace=True)
 
-  bus_dir = TableManger(os.path.join(__CUR_DIR__, "data\\business_dir.json"))
-  bus_dir.save_df(total_df, ".json")
+  total_df.set_index('place_id', drop=False, inplace=True)
+
+  return total_df
 
 def extract_add_postcode(df):
   df['postcode'] = df['formatted_address'].str.extract(r'([A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2})')
@@ -120,6 +120,7 @@ def authcode_to_income(df):
   df['mean_income'] = mean_incomes
   return df
 
+
 def create_scores(df):
   df = TableManger.add_normalised_column(df, "mean_income")
   df = TableManger.add_normalised_column(df, "rating")
@@ -129,7 +130,19 @@ def create_scores(df):
   return df
 
 
+def detailed_search_to_business_directory(df):
+  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\detailed_search_log.json"))
+  detailed_search_log.load_df(".json")
 
+  log_df = detailed_search_log.get_df()
+
+  for index, row in log_df.iterrows():
+    print(row)
+    bus_dir_row = df[row['place_id']]
+
+    print(bus_dir_row.append(row['result']))
+
+  return log_df
 
 
 

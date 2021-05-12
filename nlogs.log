@@ -182,3 +182,31 @@
 2021-05-12 15:44:22,627 - api.Logger - DEBUG - Attempt:4
 2021-05-12 15:44:32,235 - api.Logger - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJKQP0BKQDdkgRI61txsIcdeU&fields=formatted_phone_number,website,url&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
 2021-05-12 15:44:32,235 - api.Logger - DEBUG - Attempt:5
+2021-05-12 19:03:24,638 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Read timed out.
+2021-05-12 19:03:24,642 - api.Logger - DEBUG - Attempt:1
+2021-05-12 19:03:35,086 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Read timed out.
+2021-05-12 19:03:35,087 - api.Logger - DEBUG - Attempt:2
+2021-05-12 19:03:40,142 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x092AE5F8>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:03:40,143 - api.Logger - DEBUG - Attempt:3
+2021-05-12 19:03:45,189 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093D6880>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:03:45,190 - api.Logger - DEBUG - Attempt:4
+2021-05-12 19:03:50,229 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093D6AD8>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:03:50,230 - api.Logger - DEBUG - Attempt:5
+2021-05-12 19:03:55,264 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093D6D30>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:03:55,265 - api.Logger - DEBUG - Attempt:6
+2021-05-12 19:04:00,308 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093C1058>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:04:00,310 - api.Logger - DEBUG - Attempt:7
+2021-05-12 19:04:05,359 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093C11D8>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:04:05,360 - api.Logger - DEBUG - Attempt:8
+2021-05-12 19:04:10,431 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093C1418>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:04:10,431 - api.Logger - DEBUG - Attempt:9
+2021-05-12 19:04:15,465 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/beauty, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /beauty (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093C1658>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:04:15,465 - api.Logger - DEBUG - Attempt:10
+2021-05-12 19:04:17,545 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/products, Error:('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2021-05-12 19:04:17,545 - api.Logger - DEBUG - Attempt:1
+2021-05-12 19:04:22,656 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/products, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 19:04:22,656 - api.Logger - DEBUG - Attempt:2
+2021-05-12 19:04:27,702 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/products, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Max retries exceeded with url: /products (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x00E15070>, 'Connection to www.munasalon.co.uk timed out. (connect timeout=5)'))
+2021-05-12 19:04:27,703 - api.Logger - DEBUG - Attempt:3
+2021-05-12 19:04:32,839 - api.Logger - DEBUG - Connection Error to:https://www.munasalon.co.uk/products, Error:HTTPSConnectionPool(host='www.munasalon.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 19:04:32,840 - api.Logger - DEBUG - Attempt:4

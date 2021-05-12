@@ -45,10 +45,11 @@ class WebsiteScrape(object):
         linkedin = WebsiteScrape.scrape_social_links(soup, "linkedin")
 
         linked_keywords = {}
-        linked_keywords[base_domain] = WebsiteScrape.scrape_keywords(soup)
+        linked_keywords[base_domain], prices = WebsiteScrape.scrape_keywords_price(soup)
 
         linked_price = {}
-        linked_price[base_domain] = WebsiteScrape.scrape_price(soup)
+        if prices != {}:
+            linked_price[base_domain] = prices
 
         crawl_links = [x for x in crawl_links if base_domain + "/" != x]
         crawl_links = [x for x in crawl_links if base_domain != x]
@@ -63,8 +64,11 @@ class WebsiteScrape(object):
                 facebook = WebsiteScrape.scrape_social_links(soup, "facebook")
             if len(instagram) == 0:
                 instagram = WebsiteScrape.scrape_social_links(soup, "instagram")
-            linked_keywords[link] = WebsiteScrape.scrape_keywords(soup)
-            linked_price[link] = WebsiteScrape.scrape_price(soup)
+            linked_keywords[link], prices = WebsiteScrape.scrape_keywords_price(soup)
+
+            if prices != {}:
+                linked_price[link] = prices
+
 
         result = {
             "emails": emails,
@@ -85,7 +89,9 @@ class WebsiteScrape(object):
 
     @staticmethod
     def scrape_emails(soup):
-        emails = soup.find_all(text=re.compile("[\w\.-]+@[\w\.-]+"))
+
+        text = soup.get_text()
+        emails = re.findall(r'[\w\.-]+@[\w\.-]+', text)
 
         return list(set(emails))
 
@@ -113,31 +119,39 @@ class WebsiteScrape(object):
         return list(set(domain_links))
 
     @staticmethod
-    def scrape_keywords(soup):
-        empty_keywords = {
+    def scrape_keywords_price(soup):
+        keywords = {
             "eyelash": [],
             "lash": [],
             "classic": [],
-            "classic lash": [],
-            "classic eyelash": [],
             "volume": [],
-            "volume lash": [],
-            "volume eyelash": [],
             "russian": [],
-            "russian lash": [],
-            "russian eyelash": [],
         }
 
-        for key in empty_keywords:
-            nodes = soup.find_all(text=lambda x: x and key in x)
-            empty_keywords[key].append({"count": len(nodes), "nodes": nodes})
+        text = soup.get_text()
 
-        return empty_keywords
+        search_price = False
+
+        for key in keywords:
+            inst = text.count(key)
+
+            if inst > 0:
+                search_price = True
+            keywords[key].append({"count": inst})
+
+        if search_price:
+            prices = WebsiteScrape.scrape_price(soup)
+        else:
+            prices = {}
+
+        return keywords, prices
 
     @staticmethod
     def scrape_price(soup):
-        nodes = soup.find_all(text=lambda x: x and "£" in x)
-        return {"count": len(nodes), "nodes": nodes}
+        text = soup.get_text()
+        inst = text.count("£")
+
+        return {"count": inst}
 
 
 

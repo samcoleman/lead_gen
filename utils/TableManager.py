@@ -19,13 +19,12 @@ class TableManger:
     if typ == ".csv":
       self.df = pd.read_csv(self.file_path, **options)
     elif typ == ".json":
-      self.df = pd.read_json(self.file_path)
+      self.df = pd.read_json(self.file_path, orient='index')
+      print(self.df)
 
   def check_duplicate(self, col_name: str, content: str):
     series = self.df[col_name]
-
     return content in set(series)
-
 
   def add_normalised_column(self, df, col_name: str, norm_col_name: str = None):
     if norm_col_name is None:
@@ -53,7 +52,7 @@ class TableManger:
     if typ == ".csv":
       df.to_csv(self.file_path, **options)
     elif typ == ".json":
-      df.to_json(self.file_path)
+      df.to_json(self.file_path, orient='index', indent=2)
 
   def save_df_append(self, df, typ=".csv", file_path=None, **kwargs):
 
@@ -73,9 +72,9 @@ class TableManger:
         df.to_csv(self.file_path, **options, mode='a', header=False)
     elif typ == ".json":
       if self.df is None:
-        df.to_json(self.file_path)
+        df.to_json(self.file_path, orient='index', indent=2)
         self.df = df
         return
 
       self.df = pd.concat([self.df, df], ignore_index=True)
-      self.df.to_json(self.file_path)
+      self.df.to_json(self.file_path, orient='index', indent=2)
