@@ -20,7 +20,6 @@ class TableManger:
       self.df = pd.read_csv(self.file_path, **options)
     elif typ == ".json":
       self.df = pd.read_json(self.file_path, orient='index')
-      print(self.df)
 
   def check_duplicate(self, col_name: str, content: str):
     series = self.df[col_name]

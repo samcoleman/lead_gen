@@ -17,23 +17,26 @@ for search in searches:
 
 
 bus_dir = TableManger(os.path.join(__CUR_DIR__, "data\\business_dir.json"))
+bus_dir.load_df(".json")
+df = bus_dir.get_df()
 
-df = places_search_to_business_directory()
-df = extract_add_postcode(df)
+#df = places_search_to_business_directory()
+#df = extract_add_postcode(df)
 #df = postcode_to_authcode(df)
 #df = authcode_to_income(df)
 #df = create_scores(df)
 
-df = df[df['search_results_page'] == 1]
+#for index, row in df[0:20].iterrows():
+#   GoogleAPI.detailed_search(row['place_id'])
 
+#df = detailed_search_to_business_directory(df)
 
-for index, row in df.iloc.iterrows():
-    GoogleAPI.detailed_search(row['place_id'])
+website_list = df[df['website'] != ""]['website']
+print(website_list)
 
-detailed_search_to_business_directory(df.iloc[0:2])
+print(len(website_list))
 
-
-#bus_dir.save_df(df, ".json")
+bus_dir.save_df(df, ".json")
 
 
 

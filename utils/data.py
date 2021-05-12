@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-
+import sys
 import numpy as np
 from utils.TableManager import TableManger
 from utils.const import __CUR_DIR__
@@ -43,6 +43,8 @@ def places_search_to_business_directory():
     df["search_string"] = row['Search String']
 
     length = len(df)
+
+
 
     if length <= 20:
       df['search_results_page'] = 1
@@ -136,13 +138,42 @@ def detailed_search_to_business_directory(df):
 
   log_df = detailed_search_log.get_df()
 
+  df["formatted_phone_number"] = ""
+  df["url"] = ""
+  df["website"] = ""
+  df["facebook"] = ""
+  df["instagram"] = ""
+  df["twitter"] = ""
+  df["linkedin"] = ""
+
   for index, row in log_df.iterrows():
-    print(row)
-    bus_dir_row = df[row['place_id']]
 
-    print(bus_dir_row.append(row['result']))
+    try:
+      result = row["result"]
 
-  return log_df
+      if "formatted_phone_number" in result:
+        df.loc[row['place_id'], "formatted_phone_number"] = result["formatted_phone_number"]
+
+      if "url" in result:
+        df.loc[row['place_id'], "url"] = result["url"]
+
+      if "website" in result:
+        if "facebook" in result["website"]:
+          df.loc[row['place_id'], "facebook"] = result["website"]
+        elif "instagram" in result["website"]:
+          df.loc[row['place_id'], "instagram"] = result["website"]
+        elif "twitter" in result["website"]:
+          df.loc[row['place_id'], "twitter"] = result["website"]
+        elif "linkedin" in result["website"]:
+          df.loc[row['place_id'], "linkedin"] = result["website"]
+        else:
+          df.loc[row['place_id'], "website"] = result["website"]
+    except:
+      e = sys.exc_info()[0]
+      print("Error: " + str(e))
+      continue
+
+  return df
 
 
 
