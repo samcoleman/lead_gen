@@ -1,0 +1,5 @@
+Income Estimates by Region 2018
+https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales
+
+Post Code to local authority API
+https://opendata.camden.gov.uk/Maps/Postcodes-Local-Authorities-only-v01/g3bz-7ur8

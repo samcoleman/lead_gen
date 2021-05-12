@@ -1,3 +1,6 @@
+import requests
+import python
+
 api_file = open("API_KEY.txt", "r")
 
 api_key = api_file.read()
