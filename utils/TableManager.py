@@ -26,6 +26,14 @@ class TableManger:
 
     return content in set(series)
 
+  @staticmethod
+  def add_normalised_column(df, col_name: str, norm_col_name: str = None):
+    if norm_col_name is None:
+      norm_col_name = "norm_" + col_name
+
+    df[norm_col_name] = (df[col_name]-df[col_name].min())/(df[col_name].max()-df[col_name].min())
+    return df
+
   def get_df(self):
     return self.df
 

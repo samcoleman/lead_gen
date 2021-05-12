@@ -40,7 +40,20 @@ def places_search_to_business_directory():
   search_df = []
   for index, row in log_df.iterrows():
     df = pd.DataFrame(row['Results'])
-    df["Search String"] = row['Search String']
+
+    df["search_string"] = row['Search String']
+
+    length = len(df)
+
+    if length <= 20:
+      df['search_results_page'] = 1
+    elif 40 >= length > 20:
+      df.loc[:20, 'search_results_page'] = 1
+      df.loc[21:, 'search_results_page'] = 2
+    elif length > 40:
+      df.loc[:20,   'search_results_page'] = 1
+      df.loc[21:40, 'search_results_page'] = 2
+      df.loc[41:,   'search_results_page'] = 3
 
     search_df.append(df)
 
@@ -105,6 +118,14 @@ def authcode_to_income(df):
 
   print(mean_incomes)
   df['mean_income'] = mean_incomes
+  return df
+
+def create_scores(df):
+  df = TableManger.add_normalised_column(df, "mean_income")
+  df = TableManger.add_normalised_column(df, "rating")
+  df = TableManger.add_normalised_column(df, "user_ratings_total")
+
+  df["score"] = df["norm_mean_income"] + df["norm_rating"] + df["norm_user_ratings_total"]
   return df
 
 

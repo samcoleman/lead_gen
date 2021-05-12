@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class GoogleAPI(object):
-  session_request_limit = 2500
+  session_request_limit = 3000
   requests_made = 0
   
 
@@ -89,7 +89,27 @@ class GoogleAPI(object):
 
   @staticmethod
   def detailed_search(place_id):
-    print("")
+
+    #if GoogleAPI.places_search_log.check_duplicate('place_id', place_id):
+    #  print("Place_ID: " + place_id + " already found")
+    #  return
+
+
+    base_url = "https://maps.googleapis.com/maps/api/place/details/json?"
+    rj = GoogleAPI.request(base_url + "place_id=" + place_id + "&fields=formatted_phone_number,website,url")
+
+    if "result" in rj:
+      result = rj["result"]
+      d = {'place_id': place_id, 'results': result}
+      df = pd.DataFrame(d)
+      GoogleAPI.detailed_search_log.save_df_append(df, ".json")
+      return result
+    else:
+      return None
+
+
+
+
 
 
 
