@@ -32,3 +32,43 @@
 2021-05-12 12:02:21,064 - api.Logger - DEBUG - Attempt:1
 2021-05-12 12:27:26,411 - api.Logger - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJk7wqlFau2EcReo2Q-VeQG7Q&fields=formatted_phone_number,website,url&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
 2021-05-12 12:27:26,412 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:50:18,582 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:50:18,587 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:51:54,536 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:51:54,537 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:53:16,245 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:53:16,246 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:54:05,705 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:54:05,706 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:55:50,869 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:55:50,870 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:56:45,153 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:56:45,153 - api.Logger - DEBUG - Attempt:1
+2021-05-12 14:57:52,936 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 14:57:52,936 - api.Logger - DEBUG - Attempt:1
+2021-05-12 15:13:13,527 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:13:13,528 - api.Logger - DEBUG - Attempt:1
+2021-05-12 15:14:37,415 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:14:37,417 - api.Logger - DEBUG - Attempt:1
+2021-05-12 15:14:44,179 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:14:44,179 - api.Logger - DEBUG - Attempt:2
+2021-05-12 15:14:51,045 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:14:51,047 - api.Logger - DEBUG - Attempt:3
+2021-05-12 15:14:56,497 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:14:56,498 - api.Logger - DEBUG - Attempt:4
+2021-05-12 15:15:01,914 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:15:01,915 - api.Logger - DEBUG - Attempt:5
+2021-05-12 15:15:07,118 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:15:07,118 - api.Logger - DEBUG - Attempt:6
+2021-05-12 15:15:15,237 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:15:15,238 - api.Logger - DEBUG - Attempt:7
+2021-05-12 15:15:20,271 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x09371280>, 'Connection to www.beautybynaz.co.uk timed out. (connect timeout=5)'))
+2021-05-12 15:15:20,271 - api.Logger - DEBUG - Attempt:8
+2021-05-12 15:15:25,312 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093714A8>, 'Connection to www.beautybynaz.co.uk timed out. (connect timeout=5)'))
+2021-05-12 15:15:25,312 - api.Logger - DEBUG - Attempt:9
+2021-05-12 15:15:30,355 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093716D0>, 'Connection to www.beautybynaz.co.uk timed out. (connect timeout=5)'))
+2021-05-12 15:15:30,355 - api.Logger - DEBUG - Attempt:10
+2021-05-12 15:15:35,389 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.VerifiedHTTPSConnection object at 0x093718F8>, 'Connection to www.beautybynaz.co.uk timed out. (connect timeout=5)'))
+2021-05-12 15:15:35,390 - api.Logger - DEBUG - Attempt:11
+2021-05-12 15:15:40,532 - api.Logger - DEBUG - Connection Error to:https://www.beautybynaz.co.uk, Error:HTTPSConnectionPool(host='www.beautybynaz.co.uk', port=443): Read timed out. (read timeout=5)
+2021-05-12 15:15:40,532 - api.Logger - DEBUG - Attempt:12

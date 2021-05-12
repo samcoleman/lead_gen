@@ -3,35 +3,19 @@ import os
 from api.Request import Request
 from utils.TableManager import TableManger
 from utils.const import __CUR_DIR__
-import time
-import re
 
-from selenium.webdriver import Chrome, ChromeOptions
+
+import pandas as pd
+import re
+from bs4 import BeautifulSoup
 
 
 
 
 class WebsiteScrape(object):
 
-    requests_made = 0
-
     web_scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\webscrape_log.json"))
     web_scrape_log.load_df(".json")
-
-    opts = ChromeOptions()
-    opts.add_argument('--disable-extensions')
-    browser = Chrome("webdriver/chromedriver.exe", chrome_options=opts)
-
-    @staticmethod
-    def request(url: str):
-
-        r = WebsiteScrape.browser.get(url)
-
-        WebsiteScrape.requests_made = WebsiteScrape.requests_made + 1
-
-        if WebsiteScrape.requests_made % 20:
-            print("Requests Made: " + str(WebsiteScrape.requests_made))
-        return r
 
     @staticmethod
     def scrape(domain: str):
@@ -40,7 +24,97 @@ class WebsiteScrape(object):
         except:
             base_domain = domain
 
-        keywords = {
+        if WebsiteScrape.web_scrape_log.check_duplicate('base_domain', base_domain):
+            print("Scrape: " + base_domain + " already complete")
+            return
+
+        def get_page(domain):
+            print("Visiting: "+domain)
+            r = Request.get(domain)
+            soup = BeautifulSoup(r.text, 'html.parser')
+            return soup
+
+        soup = get_page(base_domain)
+        crawl_links = WebsiteScrape.scrape_domain_links(soup, base_domain)
+
+
+        emails = WebsiteScrape.scrape_emails(soup)
+        facebook = WebsiteScrape.scrape_social_links(soup, "facebook")
+        instagram = WebsiteScrape.scrape_social_links(soup, "instagram")
+        twitter = WebsiteScrape.scrape_social_links(soup, "twitter")
+        linkedin = WebsiteScrape.scrape_social_links(soup, "linkedin")
+
+        linked_keywords = {}
+        linked_keywords[base_domain] = WebsiteScrape.scrape_keywords(soup)
+
+        linked_price = {}
+        linked_price[base_domain] = WebsiteScrape.scrape_price(soup)
+
+        crawl_links = [x for x in crawl_links if base_domain + "/" != x]
+        crawl_links = [x for x in crawl_links if base_domain != x]
+        pages = len(crawl_links)
+
+        for link in crawl_links:
+            soup = get_page(link)
+
+            if len(emails) == 0:
+                emails = WebsiteScrape.scrape_emails(soup)
+            if len(facebook) == 0:
+                facebook = WebsiteScrape.scrape_social_links(soup, "facebook")
+            if len(instagram) == 0:
+                instagram = WebsiteScrape.scrape_social_links(soup, "instagram")
+            linked_keywords[link] = WebsiteScrape.scrape_keywords(soup)
+            linked_price[link] = WebsiteScrape.scrape_price(soup)
+
+        result = {
+            "emails": emails,
+            "facebook": facebook,
+            "instagram": instagram,
+            "twitter": twitter,
+            "linkedin": linkedin,
+            "keywords": linked_keywords,
+            "prices": linked_price,
+            "pages": pages
+        }
+
+        d = {'base_domain': base_domain, 'result': [result]}
+        df = pd.DataFrame(d)
+        WebsiteScrape.web_scrape_log.save_df_append(df, ".json")
+
+        return result
+
+    @staticmethod
+    def scrape_emails(soup):
+        emails = soup.find_all(text=re.compile("[\w\.-]+@[\w\.-]+"))
+
+        return list(set(emails))
+
+    @staticmethod
+    def scrape_social_links(soup, social_str: str):
+        social_links = []
+
+        links = soup.find_all('a', href=True)
+        for a_link in soup.find_all(attrs={'href': re.compile("http")}):
+            if social_str in a_link.get('href'):
+                social_links.append(a_link.get('href'))
+
+        return list(set(social_links))
+
+    @staticmethod
+    def scrape_domain_links(soup, base_domain: str):
+        domain_links = []
+
+        for a_link in soup.find_all('a', href=True):
+            if base_domain in a_link['href']:
+                domain_links.append(a_link['href'])
+            elif a_link['href'][0] == "/":
+                domain_links.append(base_domain + a_link['href'])
+
+        return list(set(domain_links))
+
+    @staticmethod
+    def scrape_keywords(soup):
+        empty_keywords = {
             "eyelash": [],
             "lash": [],
             "classic": [],
@@ -54,80 +128,16 @@ class WebsiteScrape(object):
             "russian eyelash": [],
         }
 
-        def get_page(domain):
-            WebsiteScrape.request(domain)
-            g_elems = WebsiteScrape.browser.find_elements_by_xpath("//a[@href]")
-            g_doc = WebsiteScrape.browser.page_source
+        for key in empty_keywords:
+            nodes = soup.find_all(text=lambda x: x and key in x)
+            empty_keywords[key].append({"count": len(nodes), "nodes": nodes})
 
-            return g_elems, g_doc
-
-        elems,doc = get_page(base_domain)
-        crawl_links = WebsiteScrape.scrape_domain_links(elems, base_domain)
-
-        emails = WebsiteScrape.scrape_emails(doc)
-        facebook = WebsiteScrape.scrape_social_links(elems, "facebook")
-        instagram = WebsiteScrape.scrape_social_links(elems, "instagram")
-        keywords = WebsiteScrape.scrape_keywords(doc, keywords, base_domain)
-        pages = len(crawl_links)
-
-        for link in crawl_links:
-            elems, doc = get_page(link)
-
-            if len(emails) == 0:
-                emails = WebsiteScrape.scrape_emails(doc)
-            if len(facebook) == 0:
-                facebook = WebsiteScrape.scrape_social_links(elems, "facebook")
-            if len(instagram) == 0:
-                instagram = WebsiteScrape.scrape_social_links(elems, "instagram")
-
-            keywords = WebsiteScrape.scrape_keywords(doc, keywords, base_domain)
-
-        return {
-            "emails": emails,
-            "facebook": facebook,
-            "instagram": instagram,
-            "keywords": keywords,
-            "pages": pages
-        }
+        return empty_keywords
 
     @staticmethod
-    def scrape_emails(doc):
-
-        emails = re.findall(r'[\w\.-]+@[\w\.-]+', doc)
-
-        return list(set(emails))
-
-    @staticmethod
-    def scrape_social_links(elems, social_str: str):
-        social_links = []
-
-        for elem in elems:
-            link = elem.get_attribute("href")
-            if social_str in link.lower():
-                social_links.append(link)
-
-        return social_links
-
-    @staticmethod
-    def scrape_domain_links(elems, base_domain: str):
-        domain_links = []
-
-
-        for elem in elems:
-            link = elem.get_attribute("href")
-            if base_domain in link:
-                domain_links.append(link)
-
-        return list(set(domain_links))
-
-    @staticmethod
-    def scrape_keywords(doc, keywords, cur_link):
-        for key in keywords:
-            inst = doc.count(key)
-
-            keywords[key].append({"count": inst, "link": cur_link})
-
-        return keywords
+    def scrape_price(soup):
+        nodes = soup.find_all(text=lambda x: x and "£" in x)
+        return {"count": len(nodes), "nodes": nodes}
 
 
 
