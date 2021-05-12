@@ -3,6 +3,7 @@ import os
 from utils.const import __CUR_DIR__
 
 from api.googleAPI import GoogleAPI
+from api.websiteScrape import WebsiteScrape
 
 
 file_path = os.path.join(__CUR_DIR__, "areas\London.csv")
@@ -30,8 +31,10 @@ df = bus_dir.get_df()
 
 df = df[df['search_results_page'] == 1]
 
-for index, row in df.iloc[0:10].iterrows():
-    GoogleAPI.detailed_search(row['place_id'])
+WebsiteScrape.scrape("https://pureserenity.co.uk/")
+
+#for index, row in df.iloc[0:1000].iterrows():
+#    GoogleAPI.detailed_search(row['place_id'])
 
 
 
