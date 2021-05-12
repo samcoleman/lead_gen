@@ -31,9 +31,11 @@ df = bus_dir.get_df()
 
 df = df[df['search_results_page'] == 1]
 
+print(len(df))
+
 #print(WebsiteScrape.scrape("https://www.beautybynaz.co.uk/"))
 
-for index, row in df.iloc[0:1000].iterrows():
+for index, row in df.iterrows():
     GoogleAPI.detailed_search(row['place_id'])
 
 
