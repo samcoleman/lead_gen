@@ -24,3 +24,9 @@
 2021-05-10 13:28:16,910 - api.googleAPIRequest - DEBUG - Attempt:1
 2021-05-10 13:33:44,101 - api.googleAPIRequest - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/textsearch/json?query=Eyelashes in abbey wood london&region=uk&fields=name,place_id&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
 2021-05-10 13:33:44,102 - api.googleAPIRequest - DEBUG - Attempt:1
+2021-05-12 12:00:03,064 - api.Logger - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJA-M8FRSv2EcR3sz-AqhrDVI&fields=formatted_phone_number,website,url&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
+2021-05-12 12:00:03,067 - api.Logger - DEBUG - Attempt:1
+2021-05-12 12:01:46,444 - api.Logger - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJA-M8FRSv2EcR3sz-AqhrDVI&fields=formatted_phone_number,website,url&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
+2021-05-12 12:01:46,444 - api.Logger - DEBUG - Attempt:1
+2021-05-12 12:02:21,063 - api.Logger - DEBUG - Connection Error to:https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJA-M8FRSv2EcR3sz-AqhrDVI&fields=formatted_phone_number,website,url&key=AIzaSyBE8t8B7Mm4GEjQefwQ5Q5fxTLe3lKqxR8, Error:HTTPSConnectionPool(host='maps.googleapis.com', port=443): Read timed out. (read timeout=5)
+2021-05-12 12:02:21,064 - api.Logger - DEBUG - Attempt:1

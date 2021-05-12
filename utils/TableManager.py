@@ -26,8 +26,8 @@ class TableManger:
 
     return content in set(series)
 
-  @staticmethod
-  def add_normalised_column(df, col_name: str, norm_col_name: str = None):
+
+  def add_normalised_column(self, df, col_name: str, norm_col_name: str = None):
     if norm_col_name is None:
       norm_col_name = "norm_" + col_name
 
@@ -63,7 +63,6 @@ class TableManger:
     }
     options.update(**kwargs)
 
-    self.df = df
     if file_path is not None:
       self.file_path = file_path
 

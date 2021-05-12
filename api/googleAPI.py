@@ -90,9 +90,9 @@ class GoogleAPI(object):
   @staticmethod
   def detailed_search(place_id):
 
-    #if GoogleAPI.places_search_log.check_duplicate('place_id', place_id):
-    #  print("Place_ID: " + place_id + " already found")
-    #  return
+    if GoogleAPI.detailed_search_log.check_duplicate('place_id', place_id):
+      print("Place_ID: " + place_id + " already found")
+      return None
 
 
     base_url = "https://maps.googleapis.com/maps/api/place/details/json?"
@@ -100,11 +100,12 @@ class GoogleAPI(object):
 
     if "result" in rj:
       result = rj["result"]
-      d = {'place_id': place_id, 'results': result}
+      d = {'place_id': place_id, 'result': [result]}
       df = pd.DataFrame(d)
       GoogleAPI.detailed_search_log.save_df_append(df, ".json")
       return result
     else:
+      print(rj)
       return None
 
 
