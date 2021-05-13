@@ -1,8 +1,60 @@
-import pandas as pd
-from utils.const import __CUR_DIR__
-import os
 
-df = pd.read_json(os.path.join(__CUR_DIR__, "logs\\places_search_log.json"))
+res = {"result": {
+      "emails":[
 
+      ],
+      "facebook":[
+        "http:\/\/www.facebook.com\/TheOGLashesByAllie"
+      ],
+      "instagram":[
+        "http:\/\/www.instagram.com\/lashesbyallie"
+      ],
+      "twitter":[
 
-df.to_json(os.path.join(__CUR_DIR__, "logs\\places_search_log2.json"), orient='index', indent=2)
+      ],
+      "linkedin":[
+
+      ],
+      "keywords":{
+        "http:\/\/www.lashesbyallie.co.uk":{
+          "eyelash":[
+            {
+              "count":2
+            }
+          ],
+          "lash":[
+            {
+              "count":51
+            }
+          ],
+          "classic":[
+            {
+              "count":1
+            }
+          ],
+          "volume":[
+            {
+              "count":5
+            }
+          ],
+          "russian":[
+            {
+              "count":1
+            }
+          ]
+        }
+      },
+      "prices":{
+        "http:\/\/www.lashesbyallie.co.uk":{
+          "count":10
+        }
+      },
+      "pages":0
+    }
+}
+
+result = res["result"]
+
+for link in result['keywords']:
+    for key in result['keywords'][link]:
+        print(result['keywords'][link][key][0]["count"])

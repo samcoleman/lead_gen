@@ -1,7 +1,7 @@
 
 import os
 
-from api.Request import Request
+from api.request import request
 from utils.TableManager import TableManger
 from utils.const import __CUR_DIR__
 import pandas as pd
@@ -28,7 +28,7 @@ class GoogleAPI(object):
       return {}
 
 
-    r = Request.get(url + "&key=" + GoogleAPI.api_key, 3).json()
+    r = request.get(url + "&key=" + GoogleAPI.api_key, 3).json()
 
     GoogleAPI.requests_made = GoogleAPI.requests_made + 1
 

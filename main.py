@@ -20,8 +20,8 @@ bus_dir = TableManger(os.path.join(__CUR_DIR__, "data\\business_dir.json"))
 bus_dir.load_df(".json")
 df = bus_dir.get_df()
 
-#df = places_search_to_business_directory()
-#df = extract_add_postcode(df)
+df = places_search_to_business_directory()
+df = extract_add_postcode(df)
 #df = postcode_to_authcode(df)
 #df = authcode_to_income(df)
 #df = create_scores(df)
@@ -29,12 +29,29 @@ df = bus_dir.get_df()
 #for index, row in df[0:20].iterrows():
 #   GoogleAPI.detailed_search(row['place_id'])
 
-#df = detailed_search_to_business_directory(df)
+df = detailed_search_to_business_directory(df)
+df = webscrape_to_business_directory(df)
 
-website_list = df[df['website'] != ""]['website']
-print(website_list)
+#print(df[df['website'] != ""].iloc[0:5])
 
-print(len(website_list))
+#website_list = df[df['website'] != ""]['website'].tolist()
+
+#website_list = [x for x in website_list if x != "http://www.glamourlasheslondon.com/"]
+#website_list = [x for x in website_list if x != "https://www.agnesdossantos.com/"]
+#website_list = [x for x in website_list if x != "https://www.beckylaroc.co.uk/"]
+
+
+#tot = len(website_list)
+#i = 0
+#for website in website_list:
+#  WebsiteScrape.scrape(website)
+#  print(str(i/tot) + "% Complete")
+#  i = i + 1
+
+df.to_excel(os.path.join(__CUR_DIR__, "data\\business_dir.xlsx"), index=False)
+
+
+print(len(df[df["basic_keyword_count"]>0]))
 
 bus_dir.save_df(df, ".json")
 

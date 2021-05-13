@@ -4,7 +4,7 @@ import sys
 import numpy as np
 from utils.TableManager import TableManger
 from utils.const import __CUR_DIR__
-
+import re
 from api.googleAPI import GoogleAPI
 
 
@@ -139,15 +139,14 @@ def detailed_search_to_business_directory(df):
   log_df = detailed_search_log.get_df()
 
   df["formatted_phone_number"] = ""
-  df["url"] = ""
+  df["maps_url"] = ""
   df["website"] = ""
-  df["facebook"] = ""
-  df["instagram"] = ""
-  df["twitter"] = ""
-  df["linkedin"] = ""
+  df["facebook"] = np.empty((len(df), 0)).tolist()
+  df["instagram"] = np.empty((len(df), 0)).tolist()
+  df["twitter"] = np.empty((len(df), 0)).tolist()
+  df["linkedin"] = np.empty((len(df), 0)).tolist()
 
   for index, row in log_df.iterrows():
-
     try:
       result = row["result"]
 
@@ -155,23 +154,92 @@ def detailed_search_to_business_directory(df):
         df.loc[row['place_id'], "formatted_phone_number"] = result["formatted_phone_number"]
 
       if "url" in result:
-        df.loc[row['place_id'], "url"] = result["url"]
+        df.loc[row['place_id'], "maps_url"] = result["url"]
 
       if "website" in result:
         if "facebook" in result["website"]:
-          df.loc[row['place_id'], "facebook"] = result["website"]
+          df.loc[row['place_id'], "facebook"].append(result["website"])
         elif "instagram" in result["website"]:
-          df.loc[row['place_id'], "instagram"] = result["website"]
+          df.loc[row['place_id'], "instagram"].append(result["website"])
         elif "twitter" in result["website"]:
-          df.loc[row['place_id'], "twitter"] = result["website"]
+          df.loc[row['place_id'], "twitter"].append(result["website"])
         elif "linkedin" in result["website"]:
-          df.loc[row['place_id'], "linkedin"] = result["website"]
+          df.loc[row['place_id'], "linkedin"].append(result["website"])
         else:
           df.loc[row['place_id'], "website"] = result["website"]
     except:
       e = sys.exc_info()[0]
       print("Error: " + str(e))
       continue
+
+  return df
+
+
+def webscrape_to_business_directory(df):
+  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log.json"))
+  detailed_search_log.load_df(".json")
+
+  scrape_df = detailed_search_log.get_df()
+
+  print(scrape_df.iloc[0:3])
+
+  scrape_df = scrape_df.set_index(['base_domain'])
+
+  print(scrape_df.iloc[0:3])
+
+  df["email"] = np.empty((len(df), 0)).tolist()
+  df["basic_keyword_count"] = 0
+  df["advanced_keyword_count"] = 0
+  df["price_page"] = ""
+  df["scraped_pages"] = 0
+
+  for index, row in df.iterrows():
+    domain = row["website"]
+    if domain is None:
+      continue
+
+    try:
+      base_domain = re.findall(r"^.+?[^\/:](?=[?\/]|$)", domain)[0]
+    except:
+      base_domain = domain
+
+    try:
+      result = scrape_df.loc[base_domain]["result"]
+    except:
+      continue
+
+    row["email"].extend(result["emails"])
+    row["facebook"].extend(result["facebook"])
+    row["twitter"].extend(result["twitter"])
+    row["linkedin"].extend(result["linkedin"])
+
+    basic_key_count = 0
+    advanced_key_count = 0
+
+    for link in result['keywords']:
+      for key in result['keywords'][link]:
+        val = result['keywords'][link][key][0]["count"]
+        if key == "eyelash" or key == "lash":
+          basic_key_count = basic_key_count + val
+        else:
+          advanced_key_count = advanced_key_count + val
+
+    df.at[index, "basic_keyword_count"] = basic_key_count
+    df.at[index, "advanced_keyword_count"] = advanced_key_count
+
+    #row["basic_keyword_count"] = basic_key_count
+    #row["advanced_keyword_count"] = advanced_key_count
+
+    most_likely = ""
+    freq = 0
+    for key in result["prices"]:
+      if result["prices"][key]["count"] > freq:
+        most_likely = key
+        freq = result["prices"][key]["count"]
+
+    df.at[index, "price_page"] = most_likely
+    df.at[index, "scraped_pages"] = result["pages"]
+    #row["price_page"] = most_likely
 
   return df
 

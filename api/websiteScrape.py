@@ -1,6 +1,6 @@
 import os
 
-from api.Request import Request
+from api.request import request
 from utils.TableManager import TableManger
 from utils.const import __CUR_DIR__
 
@@ -30,11 +30,20 @@ class WebsiteScrape(object):
 
         def get_page(domain):
             print("Visiting: "+domain)
-            r = Request.get(domain)
-            soup = BeautifulSoup(r.text, 'html.parser')
-            return soup
+            r = request.get(domain, .5)
+
+            if r is False:
+                return False
+            try:
+                return BeautifulSoup(r.text, 'html.parser')
+            except:
+                return False
 
         soup = get_page(base_domain)
+
+        if soup is False:
+            return
+
         crawl_links = WebsiteScrape.scrape_domain_links(soup, base_domain)
 
 
@@ -53,10 +62,14 @@ class WebsiteScrape(object):
 
         crawl_links = [x for x in crawl_links if base_domain + "/" != x]
         crawl_links = [x for x in crawl_links if base_domain != x]
+
         pages = len(crawl_links)
 
         for link in crawl_links:
             soup = get_page(link)
+
+            if soup is False:
+                return
 
             if len(emails) == 0:
                 emails = WebsiteScrape.scrape_emails(soup)
@@ -113,8 +126,12 @@ class WebsiteScrape(object):
         for a_link in soup.find_all('a', href=True):
             if base_domain in a_link['href']:
                 domain_links.append(a_link['href'])
+            elif a_link['href'] == "":
+                continue
             elif a_link['href'][0] == "/":
                 domain_links.append(base_domain + a_link['href'])
+
+
 
         return list(set(domain_links))
 
