@@ -7,8 +7,6 @@ from utils.const import __CUR_DIR__
 import re
 from api.googleAPI import GoogleAPI
 
-
-
 # Create a column called "Location String" which can be used 
 def concat_area(file_path:str):
   area_df = pd.read_csv(file_path, header=0, index_col=False, sep=",")
@@ -32,7 +30,7 @@ def list_search_strings(keyword: str, file_path:str):
 
 
 def places_search_to_business_directory():
-  places_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\places_search_log.json"))
+  places_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\places_search_log"))
   places_search_log.load_df(".json")
   log_df = places_search_log.get_df()
 
@@ -72,7 +70,7 @@ def extract_add_postcode(df):
   return df
 
 def postcode_to_authcode(df):
-  post_area = TableManger(os.path.join(__CUR_DIR__, "data\\postcode_areacode.csv"))
+  post_area = TableManger(os.path.join(__CUR_DIR__, "data\\postcode_areacode"))
   post_area.load_df(".csv")
   post_area_df = post_area.get_df()
   post_area_df['Postcode 1'] = post_area_df['Postcode 1'].str.replace(' ', '')
@@ -100,7 +98,7 @@ def postcode_to_authcode(df):
   return df
 
 def authcode_to_income(df):
-  income = TableManger(os.path.join(__CUR_DIR__, "data\\median_income.csv"))
+  income = TableManger(os.path.join(__CUR_DIR__, "data\\median_income"))
   income.load_df(".csv", sep="|")
   income_df = income.get_df()
 
@@ -123,17 +121,20 @@ def authcode_to_income(df):
   return df
 
 
-def create_scores(df):
-  df = TableManger.add_normalised_column(df, "mean_income")
-  df = TableManger.add_normalised_column(df, "rating")
-  df = TableManger.add_normalised_column(df, "user_ratings_total")
+# def create_scores(df):
+#   df = TableManger.add_normalised_column(df, "mean_income")
+#   df = TableManger.add_normalised_column(df, "rating")
+#   df = TableManger.add_normalised_column(df, "user_ratings_total")
+#
+#   df["score"] = df["norm_mean_income"] + df["norm_rating"] + df["norm_user_ratings_total"]
+#   return df
 
-  df["score"] = df["norm_mean_income"] + df["norm_rating"] + df["norm_user_ratings_total"]
-  return df
+def is_chain(df):
+  df["chain"] = not df["name"].is_unique
 
 
 def detailed_search_to_business_directory(df):
-  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\detailed_search_log.json"))
+  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\detailed_search_log"))
   detailed_search_log.load_df(".json")
 
   log_df = detailed_search_log.get_df()
@@ -176,15 +177,17 @@ def detailed_search_to_business_directory(df):
 
 
 def webscrape_to_business_directory(df):
-  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log2.json"))
-  detailed_search_log.load_df(".json")
+  scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log2"))
+  scrape_log.load_df(".json")
 
-  scrape_df = detailed_search_log.get_df()
+  scrape_df = scrape_log.get_df()
+
+  scrape_df.drop_duplicates(['base_domain'], inplace=True)
 
   scrape_df = scrape_df.set_index(['base_domain'])
 
 
-  df["email"] = np.empty((len(df), 0)).tolist()
+  df["emails"] = np.empty((len(df), 0)).tolist()
   df["basic_keyword_count"] = 0
   df["advanced_keyword_count"] = 0
   df["price_page"] = ""
@@ -205,7 +208,7 @@ def webscrape_to_business_directory(df):
     except:
       continue
 
-    row["email"].extend(result["emails"])
+    row["emails"].extend(result["emails"])
     row["facebook"].extend(result["facebook"])
     row["instagram"].extend(result["instagram"])
     row["twitter"].extend(result["twitter"])
@@ -235,12 +238,66 @@ def webscrape_to_business_directory(df):
 
     df.at[index, "price_page"] = most_likely
     df.at[index, "scraped_pages"] = result["pages"]
-    #row["price_page"] = most_likely
 
   return df
 
 
+def cleanup_emails(df):
+  df["filtered_emails"] = np.empty((len(df), 0)).tolist()
 
+  for index, row in df.iterrows():
+    emails = row['emails']
+
+    for email in emails:
+      lower_email = email.lower()
+
+      if "wix" in  lower_email:
+        continue
+
+      tld_list = [".com", ".co.uk"]
+
+      for tld in tld_list:
+        if tld in lower_email:
+          res = lower_email[:lower_email.index(tld) + len(tld)]
+
+          res = res.lstrip('0123456789.-')
+
+          row["filtered_emails"].append(res)
+
+  return df
+
+
+def cleanup_social(df, social):
+  df[str("filtered_"+social)] = np.empty((len(df), 0)).tolist()
+  filtered_socials = []
+
+  for index, row in df.iterrows():
+    socials = row[social]
+
+    for soc in socials:
+      lower_soc = soc.lower()
+
+      if social+".com/" in lower_soc:
+        filtered_socials.append(soc)
+
+    if len(filtered_socials) > 0:
+      row[str("filtered_"+social)].extend(filtered_socials)
+    else:
+      row[str("filtered_"+social)].extend(row[social])
+
+  return df
+
+def create_score(df):
+  norm_rating = TableManger.get_normalised_column(df, "rating")
+  norm_user_ratings_total = TableManger.get_normalised_column(df, "user_ratings_total")
+  norm_search_page_result = TableManger.get_normalised_column(df, "search_results_page")
+
+  df["advanced_keywords_per_page"] = df["advanced_keyword_count"] / df["scraped_pages"]
+  norm_advanced_keywords = TableManger.get_normalised_column(df, "advanced_keywords_per_page")
+
+  df["score"] = norm_rating + norm_user_ratings_total + norm_search_page_result + norm_advanced_keywords
+
+  return df
 
 
 

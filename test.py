@@ -1,60 +1,27 @@
-
-res = {"result": {
-      "emails":[
-
-      ],
-      "facebook":[
-        "http:\/\/www.facebook.com\/TheOGLashesByAllie"
-      ],
-      "instagram":[
-        "http:\/\/www.instagram.com\/lashesbyallie"
-      ],
-      "twitter":[
-
-      ],
-      "linkedin":[
-
-      ],
-      "keywords":{
-        "http:\/\/www.lashesbyallie.co.uk":{
-          "eyelash":[
-            {
-              "count":2
-            }
-          ],
-          "lash":[
-            {
-              "count":51
-            }
-          ],
-          "classic":[
-            {
-              "count":1
-            }
-          ],
-          "volume":[
-            {
-              "count":5
-            }
-          ],
-          "russian":[
-            {
-              "count":1
-            }
-          ]
-        }
-      },
-      "prices":{
-        "http:\/\/www.lashesbyallie.co.uk":{
-          "count":10
-        }
-      },
-      "pages":0
-    }
-}
-
-result = res["result"]
-
-for link in result['keywords']:
-    for key in result['keywords'][link]:
-        print(result['keywords'][link][key][0]["count"])
+#
+# from utils.TableManager import TableManger
+# from utils.const import __CUR_DIR__
+# import os
+#
+# scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log2.json"))
+# scrape_log.load_df(".json")
+#
+#
+# scrape_df = scrape_log.get_df()
+# #
+#
+# count = [d.get('pages') for d in scrape_df.result]
+# count = [x+1 for x in count]
+#
+# print(len(count))
+#
+# print(scrape_df.loc[1, "result"]["pages"])
+# for index, row in scrape_df.iterrows():
+#     print(index)
+#     scrape_df.at[index, "result"]["pages"] = count[index]
+#
+# print(scrape_df.iloc[0:10])
+#
+# scrape_df.drop_duplicates(['base_domain'], inplace=True)
+#
+# scrape_log.save_df(scrape_df, ".json")

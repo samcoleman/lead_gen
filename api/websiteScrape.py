@@ -62,7 +62,7 @@ class WebsiteScrape(object):
         crawl_links = [x for x in crawl_links if base_domain + "/" != x]
         crawl_links = [x for x in crawl_links if base_domain != x]
 
-        pages = len(crawl_links)
+        pages = len(crawl_links)+1
 
         for link in crawl_links:
             soup = get_page(link)

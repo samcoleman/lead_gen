@@ -32,6 +32,10 @@ class TableManger:
     df[norm_col_name] = (df[col_name]-df[col_name].min())/(df[col_name].max()-df[col_name].min())
     return df
 
+  @staticmethod
+  def get_normalised_column(df, col_name: str):
+    return (df[col_name]-df[col_name].min())/(df[col_name].max()-df[col_name].min())
+
   def get_df(self):
     return self.df
 
@@ -49,9 +53,11 @@ class TableManger:
       self.file_path = file_path
 
     if typ == ".csv":
-      df.to_csv(self.file_path, **options)
+      df.to_csv(os.path.join(self.file_path, ".csv"), **options)
     elif typ == ".json":
-      df.to_json(self.file_path, orient='index', indent=2)
+      df.to_json(os.path.join(self.file_path, ".json").file_path, orient='index', indent=2)
+    elif typ == ".xlsx":
+      df.to_excel(os.path.join(self.file_path, ".xlsx"), index=False)
 
   def save_df_append(self, df, typ=".csv", file_path=None, **kwargs):
 
@@ -65,15 +71,15 @@ class TableManger:
       self.file_path = file_path
 
     if typ == ".csv":
-      if not os.path.isfile(self.file_path):
-        df.to_csv(self.file_path, **options, mode='a')
+      if not os.path.isfile(os.path.join(self.file_path, ".csv")):
+        df.to_csv(os.path.join(self.file_path, ".csv"), **options, mode='a')
       else:
-        df.to_csv(self.file_path, **options, mode='a', header=False)
+        df.to_csv(os.path.join(self.file_path, ".csv"), **options, mode='a', header=False)
     elif typ == ".json":
       if self.df is None:
-        df.to_json(self.file_path, orient='index', indent=2)
+        df.to_json(os.path.join(self.file_path, ".json"), orient='index', indent=2)
         self.df = df
         return
 
       self.df = pd.concat([self.df, df], ignore_index=True)
-      self.df.to_json(self.file_path, orient='index', indent=2)
+      self.df.to_json(os.path.join(self.file_path, ".json"), orient='index', indent=2)
