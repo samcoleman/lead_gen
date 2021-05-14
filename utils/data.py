@@ -176,16 +176,13 @@ def detailed_search_to_business_directory(df):
 
 
 def webscrape_to_business_directory(df):
-  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log.json"))
+  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\\webscrape_log2.json"))
   detailed_search_log.load_df(".json")
 
   scrape_df = detailed_search_log.get_df()
 
-  print(scrape_df.iloc[0:3])
-
   scrape_df = scrape_df.set_index(['base_domain'])
 
-  print(scrape_df.iloc[0:3])
 
   df["email"] = np.empty((len(df), 0)).tolist()
   df["basic_keyword_count"] = 0
@@ -210,6 +207,7 @@ def webscrape_to_business_directory(df):
 
     row["email"].extend(result["emails"])
     row["facebook"].extend(result["facebook"])
+    row["instagram"].extend(result["instagram"])
     row["twitter"].extend(result["twitter"])
     row["linkedin"].extend(result["linkedin"])
 
@@ -219,16 +217,14 @@ def webscrape_to_business_directory(df):
     for link in result['keywords']:
       for key in result['keywords'][link]:
         val = result['keywords'][link][key][0]["count"]
-        if key == "eyelash" or key == "lash":
+        if key == "eyelash" or key == "lash" or key == "extension" or \
+                key == "classic" or key == "volume" or key == "russian":
           basic_key_count = basic_key_count + val
         else:
           advanced_key_count = advanced_key_count + val
 
     df.at[index, "basic_keyword_count"] = basic_key_count
     df.at[index, "advanced_keyword_count"] = advanced_key_count
-
-    #row["basic_keyword_count"] = basic_key_count
-    #row["advanced_keyword_count"] = advanced_key_count
 
     most_likely = ""
     freq = 0

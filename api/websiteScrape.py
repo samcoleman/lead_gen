@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 class WebsiteScrape(object):
 
-    web_scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\webscrape_log.json"))
+    web_scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\webscrape_log2.json"))
     web_scrape_log.load_df(".json")
 
     @staticmethod
@@ -45,8 +45,6 @@ class WebsiteScrape(object):
             return
 
         crawl_links = WebsiteScrape.scrape_domain_links(soup, base_domain)
-
-
         emails = WebsiteScrape.scrape_emails(soup)
         facebook = WebsiteScrape.scrape_social_links(soup, "facebook")
         instagram = WebsiteScrape.scrape_social_links(soup, "instagram")
@@ -57,6 +55,7 @@ class WebsiteScrape(object):
         linked_keywords[base_domain], prices = WebsiteScrape.scrape_keywords_price(soup)
 
         linked_price = {}
+
         if prices != {}:
             linked_price[base_domain] = prices
 
@@ -81,7 +80,6 @@ class WebsiteScrape(object):
 
             if prices != {}:
                 linked_price[link] = prices
-
 
         result = {
             "emails": emails,
@@ -131,8 +129,6 @@ class WebsiteScrape(object):
             elif a_link['href'][0] == "/":
                 domain_links.append(base_domain + a_link['href'])
 
-
-
         return list(set(domain_links))
 
     @staticmethod
@@ -140,12 +136,25 @@ class WebsiteScrape(object):
         keywords = {
             "eyelash": [],
             "lash": [],
+            "extension": [],
+            "eyelash extension": [],
+            "lash extension": [],
             "classic": [],
+            "classic extension": [],
+            "classic lash": [],
+            "classic eyelash": [],
             "volume": [],
+            "volume extension": [],
+            "volume lash": [],
+            "volume eyelash": [],
             "russian": [],
+            "russian extension": [],
+            "russian lash": [],
+            "russian eyelash": [],
+            "full set": [],
         }
 
-        text = soup.get_text()
+        text = soup.get_text().lower()
 
         search_price = False
 
