@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 class WebsiteScrape(object):
 
-    web_scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\webscrape_log2.json"))
+    web_scrape_log = TableManger(os.path.join(__CUR_DIR__, "logs\webscrape_log"))
     web_scrape_log.load_df(".json")
 
     @staticmethod

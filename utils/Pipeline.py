@@ -4,8 +4,8 @@ from api.websiteScrape import WebsiteScrape
 from utils.data import *
 
 
-def places_search(file_location: str, keyword: str, table: TableManger):
-    searches = list_search_strings(keyword, file_location)
+def places_search(area_table: TableManger, keyword: str, table: TableManger):
+    searches = list_search_strings(keyword, area_table)
 
     for search in searches:
         GoogleAPI.places_search(search)
@@ -26,7 +26,7 @@ def detailed_search(table: TableManger):
        GoogleAPI.detailed_search(row['place_id'])
 
     df = detailed_search_to_business_directory(df)
-    df = is_chain(df)
+    #df = is_chain(df)
     table.save_df(df, ".json")
 
 

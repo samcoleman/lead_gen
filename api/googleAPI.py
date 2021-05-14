@@ -8,18 +8,22 @@ import pandas as pd
 
 
 class GoogleAPI(object):
-  session_request_limit = 3000
+  session_request_limit = 4000
   requests_made = 0
   
 
   api_file = open("api\API_KEY.txt", "r")
   api_key = api_file.read()
 
-  places_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\places_search_log.json"))
+  places_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\places_search_log"))
   places_search_log.load_df(".json")
 
-  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\detailed_search_log.json"))
+  detailed_search_log = TableManger(os.path.join(__CUR_DIR__, "logs\detailed_search_log"))
   detailed_search_log.load_df(".json")
+
+  @staticmethod
+  def set_session_request_limit(limit):
+    GoogleAPI.session_request_limit = limit
 
   @staticmethod
   def request(url: str):
@@ -43,12 +47,17 @@ class GoogleAPI(object):
       print("Place Search: " + search_str + " already complete")
       return
 
+    print("Google API place search: " + search_str)
+
     results = []
 
     base_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
     rj = GoogleAPI.request(base_url + "query=" + search_str + "&region=uk&fields=name,place_id")
 
-    def next_page(next_page_token, tries = 0):
+    if rj == {}:
+      return
+
+    def next_page(next_page_token, tries=0):
       # Recursion limit
       if tries > 5:
         return
@@ -94,9 +103,13 @@ class GoogleAPI(object):
       print("Place_ID: " + place_id + " already found")
       return None
 
+    print("Google API detailed search: " + place_id)
 
     base_url = "https://maps.googleapis.com/maps/api/place/details/json?"
     rj = GoogleAPI.request(base_url + "place_id=" + place_id + "&fields=formatted_phone_number,website,url")
+
+    if rj == {}:
+      return
 
     if "result" in rj:
       result = rj["result"]
@@ -105,7 +118,6 @@ class GoogleAPI(object):
       GoogleAPI.detailed_search_log.save_df_append(df, ".json")
       return result
     else:
-      print(rj)
       return None
 
 

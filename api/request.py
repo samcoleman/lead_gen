@@ -38,8 +38,8 @@ class request:
 
       request.firstproxy = request.current_proxy
 
-      request.logger.debug("Updating proxy & header pool")
-      request.logger.debug("Starting proxy:" + request.current_proxy)
+      #request.logger.debug("Updating proxy & header pool")
+      #request.logger.debug("Starting proxy:" + request.current_proxy)
 
 
   @staticmethod
