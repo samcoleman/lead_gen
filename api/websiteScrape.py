@@ -28,9 +28,10 @@ class WebsiteScrape(object):
             print("Scrape: " + base_domain + " already complete")
             return
 
-        def get_page(domain):
-            print("Visiting: "+domain)
-            r = request.get(domain, .5)
+        print("Scraping: " + domain)
+
+        def get_page(dom):
+            r = request.get(dom, .5)
 
             if r is False:
                 return False
@@ -62,13 +63,18 @@ class WebsiteScrape(object):
         crawl_links = [x for x in crawl_links if base_domain + "/" != x]
         crawl_links = [x for x in crawl_links if base_domain != x]
 
+        if len(crawl_links) > 30:
+            crawl_links = crawl_links[:28]
+
         pages = len(crawl_links)+1
+
+        print("Sub pages found: "+str(pages-1))
 
         for link in crawl_links:
             soup = get_page(link)
 
             if soup is False:
-                return
+                continue
 
             if len(emails) == 0:
                 emails = WebsiteScrape.scrape_emails(soup)

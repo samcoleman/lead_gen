@@ -66,7 +66,7 @@ class request:
           request.logger.debug("Attempt:" + str(tries + 1))
           return request.get(html, delay, tries + 1)
       else:
-          request.logger.debug("Something v wrong??")
+          #request.logger.debug("Something v wrong??")
           return False
 
   @staticmethod

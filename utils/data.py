@@ -24,8 +24,6 @@ def list_search_strings(keyword: str, area_table: TableManger):
   area_table.load_df(".xlsx")
   area_df = area_table.get_df()
 
-  print(area_df)
-
   search_strings = []
 
   for index, row in area_df.iterrows():

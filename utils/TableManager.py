@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 
 
@@ -8,6 +7,7 @@ class TableManger:
 
     self.file_path = file_path
     self.df = None
+
 
   def load_df(self, typ=".csv", **kwargs):
     options = {
@@ -54,6 +54,8 @@ class TableManger:
     }
     options.update(**kwargs)
 
+    print("Saving data: " + self.file_path)
+
     self.df = df
     if file_path is not None:
       self.file_path = file_path
@@ -63,7 +65,9 @@ class TableManger:
     elif typ == ".json":
       df.to_json(self.file_path+".json", orient='index', indent=2)
     elif typ == ".xlsx":
-      df.to_excel(self.file_path+".xlsx", engine='openpyxl', index=False)
+      writer = pd.ExcelWriter(self.file_path+".xlsx", engine='openpyxl')
+      df.to_excel(writer, index=False)
+      writer.save()
 
   def save_df_append(self, df, typ=".csv", file_path=None, **kwargs):
 

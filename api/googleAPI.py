@@ -103,13 +103,15 @@ class GoogleAPI(object):
       print("Place_ID: " + place_id + " already found")
       return None
 
-    print("Google API detailed search: " + place_id)
+
 
     base_url = "https://maps.googleapis.com/maps/api/place/details/json?"
     rj = GoogleAPI.request(base_url + "place_id=" + place_id + "&fields=formatted_phone_number,website,url")
 
     if rj == {}:
       return
+
+    print("Google API detailed search: " + place_id)
 
     if "result" in rj:
       result = rj["result"]
